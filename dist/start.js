@@ -1,10 +1,19 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Benchmark = require("benchmark");
-const intValue = '1';
+const intValueAsString = '1';
+const doubleValueLowPrecision = 10.20;
+const doubleValueHighPrecision = 10.20234234234234234234234;
+const loopData10Items = '1'.repeat(10).split('');
+const loopData100Items = '1'.repeat(100).split('');
+const loopData1000Items = '1'.repeat(1000).split('');
+const loopData10000Items = '1'.repeat(10000).split('');
+const loopData100000Items = '1'.repeat(100000).split('');
+const loopData1000000Items = '1'.repeat(1000000).split('');
 const experiments = [
+    // Casting/Parsing
     {
-        suite: 'Parsing int to string',
+        suite: 'int to string',
         cases: {
             '-> String()': () => {
                 return String('1');
@@ -15,32 +24,226 @@ const experiments = [
         }
     },
     {
-        suite: '\n\n\nParsing string to Int',
+        suite: 'string to Int',
         cases: {
             '-> parseInt()': () => {
-                return parseInt(intValue, 2);
+                return parseInt(intValueAsString, 2);
             },
             '-> ~~1': () => {
-                return ~~intValue;
+                return ~~intValueAsString;
+            },
+            '-> +1': () => {
+                return +intValueAsString;
+            }
+        }
+    },
+    {
+        suite: 'double(low precision) to Int',
+        cases: {
+            '-> ~~1': () => {
+                return ~~doubleValueLowPrecision;
+            },
+            '-> +1': () => {
+                return +doubleValueLowPrecision;
+            }
+        }
+    },
+    {
+        suite: 'double(high precision) to Int',
+        cases: {
+            '-> ~~1': () => {
+                return ~~doubleValueHighPrecision;
+            },
+            '-> +1': () => {
+                return +doubleValueHighPrecision;
+            }
+        }
+    },
+    {
+        suite: 'int to boolean',
+        cases: {
+            '-> !!IntValue': () => {
+                return !!intValueAsString;
+            },
+            '-> Boolean()': () => {
+                return Boolean(intValueAsString);
+            }
+        }
+    },
+    // Loop
+    {
+        suite: 'loop on simple array 1,000 items',
+        cases: {
+            '-> map': () => {
+                loopData1000Items.map((data) => {
+                    dummyPrint(data);
+                });
+            },
+            '-> foreach of': () => {
+                for (const x of loopData1000Items) {
+                    const data = loopData1000Items[x];
+                    dummyPrint(data);
+                }
+            },
+            '-> for': () => {
+                for (let x = 0; x < loopData1000Items.length; x++) {
+                    const data = loopData1000Items[x];
+                    dummyPrint(data);
+                }
+            }
+        }
+    },
+    {
+        suite: 'loop on simple array 10 items',
+        cases: {
+            '-> map': () => {
+                loopData10Items.map((data) => {
+                    dummyPrint(data);
+                });
+            },
+            '-> foreach of': () => {
+                for (const x of loopData10Items) {
+                    const data = loopData10Items[x];
+                    dummyPrint(data);
+                }
+            },
+            '-> for': () => {
+                for (let x = 0; x < loopData10Items.length; x++) {
+                    const data = loopData10Items[x];
+                    dummyPrint(data);
+                }
+            }
+        }
+    },
+    {
+        suite: 'loop on simple array 100 items',
+        cases: {
+            '-> map': () => {
+                loopData100Items.map((data) => {
+                    dummyPrint(data);
+                });
+            },
+            '-> foreach of': () => {
+                for (const x of loopData100Items) {
+                    const data = loopData100Items[x];
+                    dummyPrint(data);
+                }
+            },
+            '-> for': () => {
+                for (let x = 0; x < loopData100Items.length; x++) {
+                    const data = loopData100Items[x];
+                    dummyPrint(data);
+                }
+            }
+        }
+    },
+    {
+        suite: 'loop on simple array 1000 items',
+        cases: {
+            '-> map': () => {
+                loopData1000Items.map((data) => {
+                    dummyPrint(data);
+                });
+            },
+            '-> foreach of': () => {
+                for (const x of loopData1000Items) {
+                    const data = loopData1000Items[x];
+                    dummyPrint(data);
+                }
+            },
+            '-> for': () => {
+                for (let x = 0; x < loopData1000Items.length; x++) {
+                    const data = loopData1000Items[x];
+                    dummyPrint(data);
+                }
+            }
+        }
+    },
+    {
+        suite: 'loop on simple array 10,000 items',
+        cases: {
+            '-> map': () => {
+                loopData10000Items.map((data) => {
+                    dummyPrint(data);
+                });
+            },
+            '-> foreach of': () => {
+                for (const x of loopData10000Items) {
+                    const data = loopData10000Items[x];
+                    dummyPrint(data);
+                }
+            },
+            '-> for': () => {
+                for (let x = 0; x < loopData10000Items.length; x++) {
+                    const data = loopData10000Items[x];
+                    dummyPrint(data);
+                }
+            }
+        }
+    },
+    {
+        suite: 'loop on simple array 100,000 items',
+        cases: {
+            '-> map': () => {
+                loopData100000Items.map((data) => {
+                    dummyPrint(data);
+                });
+            },
+            '-> foreach of': () => {
+                for (const x of loopData100000Items) {
+                    const data = loopData100000Items[x];
+                    dummyPrint(data);
+                }
+            },
+            '-> for': () => {
+                for (let x = 0; x < loopData100000Items.length; x++) {
+                    const data = loopData100000Items[x];
+                    dummyPrint(data);
+                }
+            }
+        }
+    },
+    {
+        suite: 'loop on simple array 1,000,000 items',
+        cases: {
+            '-> map': () => {
+                loopData1000000Items.map((data) => {
+                    dummyPrint(data);
+                });
+            },
+            '-> foreach of': () => {
+                for (const x of loopData1000000Items) {
+                    const data = loopData1000000Items[x];
+                    dummyPrint(data);
+                }
+            },
+            '-> for': () => {
+                for (let x = 0; x < loopData1000000Items.length; x++) {
+                    const data = loopData1000000Items[x];
+                    dummyPrint(data);
+                }
             }
         }
     }
 ];
+console.log('Node ', process.version);
 experiments.map((experiment) => {
     // Parsing Suite
     const suite = new Benchmark.Suite;
-    console.log(experiment.suite);
+    console.log('\n\n\n', experiment.suite);
     Object.keys(experiment.cases).map((caseKey) => {
         suite.add(caseKey, experiment.cases[caseKey]);
     });
     suite
-        .on('cycle', function (event) {
-        // console.log(String(event.target))
-    })
         .on('complete', function () {
         console.log('\tFastest is ' + this.filter('fastest').map('name'));
     })
         // run async
-        .run({ 'async': false });
+        .run({ 'async': false, initCount: 10000 });
 });
+function dummyPrint(data) {
+    console.warn = () => undefined;
+    console.warn(data);
+    // do nothing
+}
 //# sourceMappingURL=start.js.map

@@ -9,7 +9,7 @@
     "build:ts": "tsc -p .",
     "build:ts:watch": "tsc -w -p .",
     "postinstall": "npm run build",
-    "start": "npm run build && node ./dist/start.js",
+    "start": "npm run build > /dev/null && node ./dist/start.js",
     "lint": "tslint --project tsconfig.json --config tslint.json",
     "prettier": "prettier src/**/*.ts",
     "prettier:fix": "npm run prettier -- --write"
@@ -26,8 +26,8 @@
   "homepage": "https://github.com/blackavec/best-practices-benchmarks#readme",
   "dependencies": {
     "benchmark": "^2.1.4",
-    "microtime": "^2.1.8",
     "lint-staged": "^8.0.4",
+    "microtime": "^2.1.8",
     "prettier": "^1.15.1",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
