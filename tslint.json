@@ -1,0 +1,19 @@
+/* cSpell:disable */
+{
+  "extends": ["tslint:latest", "tslint-config-prettier"],
+  "rules": {
+    "ordered-imports": {
+      "options": {
+        "named-imports-order": "any",
+        "import-sources-order": "case-insensitive"
+      }
+    },
+    "object-literal-sort-keys": false,
+    "only-arrow-functions": false,
+    "no-implicit-dependencies": [true, "dev"],
+    "no-submodule-imports": [false, "jest"],
+    "no-console": false,
+    "no-bitwise": false,
+    "interface-name": [true, "never-prefix"]
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "name": "best-practices-benchmarks",
+  "version": "1.0.0",
+  "description": "a benchmark on nodejs simple day to day operations to maximize the algorithms performance",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run lint && npm run build:ts",
+    "build:clean": "rm -rf dist coverage",
+    "build:ts": "tsc -p .",
+    "build:ts:watch": "tsc -w -p .",
+    "postinstall": "npm run build",
+    "start": "npm run build && node ./dist/start.js",
+    "lint": "tslint --project tsconfig.json --config tslint.json",
+    "prettier": "prettier src/**/*.ts",
+    "prettier:fix": "npm run prettier -- --write"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blackavec/best-practices-benchmarks.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/blackavec/best-practices-benchmarks/issues"
+  },
+  "homepage": "https://github.com/blackavec/best-practices-benchmarks#readme",
+  "dependencies": {
+    "benchmark": "^2.1.4",
+    "microtime": "^2.1.8",
+    "lint-staged": "^8.0.4",
+    "prettier": "^1.15.1",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.15.0",
+    "tslint-config-standard": "^8.0.1"
+  },
+  "devDependencies": {
+    "@types/benchmark": "^1.0.31",
+    "@types/microtime": "^2.1.0",
+    "typescript": "^3.1.6"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "npm run prettier:fix",
+      "git add"
+    ]
+  }
+}
