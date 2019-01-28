@@ -10,6 +10,29 @@ const loopData1000Items = '1'.repeat(1000).split('');
 const loopData10000Items = '1'.repeat(10000).split('');
 const loopData100000Items = '1'.repeat(100000).split('');
 const loopData1000000Items = '1'.repeat(1000000).split('');
+const chainMethodForPushingIntoStack = {
+    stack: [],
+    add: function (data) {
+        chainMethodForPushingIntoStack.stack.push(data);
+        return this;
+    },
+    execute: function () {
+        return chainMethodForPushingIntoStack.stack;
+    }
+};
+const simpleMethodForPushingIntoStack = {
+    stack: [],
+    add: function (...data) {
+        simpleMethodForPushingIntoStack.stack = [
+            ...simpleMethodForPushingIntoStack.stack,
+            ...data
+        ];
+        return this;
+    },
+    execute: function () {
+        return simpleMethodForPushingIntoStack.stack;
+    }
+};
 const experiments = [
     // Casting/Parsing
     {
@@ -72,28 +95,6 @@ const experiments = [
     },
     // Loop
     {
-        suite: 'loop on simple array 1,000 items',
-        cases: {
-            '-> map': () => {
-                loopData1000Items.map((data) => {
-                    dummyPrint(data);
-                });
-            },
-            '-> foreach of': () => {
-                for (const x of loopData1000Items) {
-                    const data = loopData1000Items[x];
-                    dummyPrint(data);
-                }
-            },
-            '-> for': () => {
-                for (let x = 0; x < loopData1000Items.length; x++) {
-                    const data = loopData1000Items[x];
-                    dummyPrint(data);
-                }
-            }
-        }
-    },
-    {
         suite: 'loop on simple array 10 items',
         cases: {
             '-> map': () => {
@@ -138,7 +139,7 @@ const experiments = [
         }
     },
     {
-        suite: 'loop on simple array 1000 items',
+        suite: 'loop on simple array 1,000 items',
         cases: {
             '-> map': () => {
                 loopData1000Items.map((data) => {
@@ -224,6 +225,103 @@ const experiments = [
                 }
             }
         }
+    },
+    // functions
+    {
+        suite: 'stack > chaing method vs simple argument method',
+        cases: {
+            '-> data.add(1).add(2).add(3).execute()': () => {
+                dummyPrint(chainMethodForPushingIntoStack.add(1).add(2).add(3).execute());
+            },
+            '-> data.add(1, 2, 3).execute()': () => {
+                dummyPrint(simpleMethodForPushingIntoStack.add(1, 2, 3).execute());
+            }
+        }
+    },
+    // data structure
+    {
+        suite: 'push/assign',
+        cases: {
+            '-> [].push(x)': () => {
+                const tmpData = [];
+                tmpData.push(1);
+                tmpData.push(2);
+                tmpData.push(3);
+                tmpData.push(4);
+                tmpData.push(5);
+            },
+            '-> [...array, x]': () => {
+                let tmpData = [];
+                tmpData = [...tmpData, 1];
+                tmpData = [...tmpData, 2];
+                tmpData = [...tmpData, 3];
+                tmpData = [...tmpData, 4];
+                tmpData = [...tmpData, 5];
+            }
+        }
+    },
+    {
+        suite: 'unshift/assign',
+        cases: {
+            '-> [].unshift(x)': () => {
+                const tmpData = [];
+                tmpData.unshift(1);
+                tmpData.unshift(2);
+                tmpData.unshift(3);
+                tmpData.unshift(4);
+                tmpData.unshift(5);
+            },
+            '-> [...array, x]': () => {
+                let tmpData = [];
+                tmpData = [1, ...tmpData];
+                tmpData = [2, ...tmpData];
+                tmpData = [3, ...tmpData];
+                tmpData = [4, ...tmpData];
+                tmpData = [5, ...tmpData];
+            }
+        }
+    },
+    {
+        suite: 'pop/slice',
+        cases: {
+            '-> [].pop(x)': () => {
+                const tmpData = [5, 4, 3, 2, 1];
+                tmpData.pop();
+                tmpData.pop();
+                tmpData.pop();
+                tmpData.pop();
+                tmpData.pop();
+            },
+            '-> [...array, x]': () => {
+                const tmpData = [5, 4, 3, 2, 1];
+                tmpData.splice(-1, 1);
+                tmpData.splice(-1, 1);
+                tmpData.splice(-1, 1);
+                tmpData.splice(-1, 1);
+                tmpData.splice(-1, 1);
+            }
+        }
+    },
+    {
+        suite: 'shift/slice',
+        cases: {
+            '-> [].shift(x)': () => {
+                const tmpData = [5, 4, 3, 2, 1];
+                tmpData.shift();
+                tmpData.shift();
+                tmpData.shift();
+                tmpData.shift();
+                tmpData.shift();
+            },
+            '-> [...array, x]': () => {
+                const tmpData = [5, 4, 3, 2, 1];
+                tmpData.splice(1, 1);
+                tmpData.splice(1, 1);
+                tmpData.splice(1, 1);
+                tmpData.splice(1, 1);
+                tmpData.splice(1, 1);
+            }
+        }
     }
 ];
 console.log('Node ', process.version);
@@ -235,15 +333,16 @@ experiments.map((experiment) => {
         suite.add(caseKey, experiment.cases[caseKey]);
     });
     suite
+        // .on('cycle', function(event) {
+        //   console.log(String(event.target));
+        // })
         .on('complete', function () {
         console.log('\tFastest is ' + this.filter('fastest').map('name'));
     })
-        // run async
         .run({ 'async': false, initCount: 10000 });
 });
 function dummyPrint(data) {
     console.warn = () => undefined;
     console.warn(data);
-    // do nothing
 }
 //# sourceMappingURL=start.js.map

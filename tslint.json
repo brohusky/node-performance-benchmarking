@@ -15,6 +15,7 @@
     "no-console": false,
     "no-bitwise": false,
     "interface-name": [true, "never-prefix"],
-    "prefer-for-of": false
+    "prefer-for-of": false,
+    "object-literal-shorthand": false
   }
 }
